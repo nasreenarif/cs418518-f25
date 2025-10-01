@@ -41,7 +41,7 @@ export default function Login() {
     // console.log(import.meta.env.VITE_API_KEY + "user/login");
     const response = await fetch(import.meta.env.VITE_API_KEY + "user/login", {
     // const response = await fetch("http://localhost:8080/user/login", {
-      method: "POST",      
+      method: "POST", //GET , PUT     
       body: formBody,
       headers: {
         "content-type": "application/json",
