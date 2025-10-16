@@ -63,10 +63,11 @@ export default function Login() {
 
   return (
     <div id="login">
+      <p class="text-3xl font-bold underline">Tailwind CSS</p>
       <div className="controls">
         {/* Email input field */}
         <p>
-          <label>Email</label>
+          <label className="lable">Email</label>
           <input
             type="email"
             // Add 'invalid' class if the email is invalid after form submission
@@ -75,6 +76,8 @@ export default function Login() {
             onChange={(event) => handleInputChange("email", event.target.value)}
           />
         </p>
+
+
 
         {/* Password input field */}
         <p>
@@ -100,7 +103,7 @@ export default function Login() {
 
         {/* Button to trigger login function */}
         <button className="button" onClick={handleLogin}>
-          Sign In
+          Sign In 
         </button>
       </div>
     </div>
