@@ -195,11 +195,14 @@ user.post("/login", (req, res) => {
         `;
 
         sendEmail(user.u_email, subject, htmlBody);
+        // Save username in session
+        req.session.user= {email: user.u_email };
 
         res.status(200).json({
           status: "200",
           message: "Login successful",
           result: user,
+          // email:req.session.user
         });
       } else {
         res.status(401).json({ message: "Invalid email or password" });
@@ -207,5 +210,7 @@ user.post("/login", (req, res) => {
     }
   );
 });
+
+
 
 export default user;

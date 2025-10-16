@@ -1,4 +1,5 @@
 // Importing useState hook from React and the CSS file for styling
+import Cookies from 'js-cookie';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
@@ -46,11 +47,13 @@ export default function Login() {
       headers: {
         "content-type": "application/json",
       },
+      credentials:'include' //send cookies
     });
 
     if (response.ok) {
       const result = await response.json();
       console.log(result);
+      Cookies.set("userid",result.result.u_id)
        navigate("/dashboard");
     }
   };

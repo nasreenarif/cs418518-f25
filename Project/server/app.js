@@ -1,7 +1,11 @@
 import bodyParser from "body-parser";
 import cors from 'cors';
 import express from "express";
+import session from "express-session";
+import profile from "./route/profile.js";
 import user from "./route/user.js";
+
+
 const app = express();
 const port = 8080;
 
@@ -17,14 +21,28 @@ app.use(myLogger);
 app.use(
   cors({
     origin: "http://localhost:5173",
+    credentials:true, //allows cookies to be sent
     //////////// Optional
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type"],
   })
 );
+
+app.use(session({
+  secret: "secret123",
+  saveUninitialized: true,
+  resave: false,
+  cookie: {
+    secure: false, // set to true in production with HTTPS
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 // 1 hour
+  }
+}))
+
 app.use(bodyParser.json());
 //middleware for user route
 app.use("/user", user);
+app.use("/profile",profile)
 
 app.get("/", (req, res) => {
   ////write logic
