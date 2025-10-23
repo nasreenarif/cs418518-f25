@@ -28,6 +28,7 @@ app.use(
     allowedHeaders: ["Content-Type"],
   })
 );
+app.set('trust proxy', 1);
 
 app.use(session({
   secret: "secret123",
