@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -26,7 +27,7 @@ export default function Dashboard() {
           Welcome to your Dashboard!
         </h1>
         <p className="text-gray-600">
-          {/* You are successfully loggedIn User id {Cookies.get("userid")} */}
+          You are successfully loggedIn User id {Cookies.get("userid")}
            You are successfully logged in as <strong>{user?.email}</strong>
           </p>
         

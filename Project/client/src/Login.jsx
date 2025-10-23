@@ -70,7 +70,7 @@ export default function Login() {
       <div className="controls">
         {/* Email input field */}
         <p>
-          <label className="lable">Email</label>
+          <label className={`label ${emailNotValid ? "invalid" : " "}`}>Email</label>
           <input
             type="email"
             // Add 'invalid' class if the email is invalid after form submission
