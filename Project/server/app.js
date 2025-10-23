@@ -1,5 +1,6 @@
 import bodyParser from "body-parser";
 import cors from 'cors';
+import 'dotenv/config';
 import express from "express";
 import session from "express-session";
 import profile from "./route/profile.js";
@@ -20,7 +21,7 @@ const myLogger = function (req, res, next) {
 app.use(myLogger);
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FE_ORIGIN,
     credentials:true, //allows cookies to be sent
     //////////// Optional
     methods: ["GET", "POST", "PUT", "DELETE"],
