@@ -28,7 +28,7 @@ app.use(
     allowedHeaders: ["Content-Type"],
   })
 );
-app.set('trust proxy', 1);
+app.set('trust proxy', 1); // Need for hosted Apps
 
 app.use(session({
   secret: "secret123",
@@ -36,7 +36,7 @@ app.use(session({
   resave: false,
   cookie: {
     secure: true, // set to true in production with HTTPS
-    sameSite:'none',
+    sameSite:'none', //to allow cookie from cross origin
     httpOnly: true,
     maxAge: 1000 * 60 * 60 // 1 hour
   }

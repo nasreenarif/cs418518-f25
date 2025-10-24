@@ -5,12 +5,14 @@ import { hashPassword } from "../utils/helper.js";
 // Import compare password function
 import { comparePassword } from "../utils/helper.js";
 // Import send email function
+import 'dotenv/config';
 import { sendEmail } from "../utils/sendmail.js";
 
 const user = Router();
 
 user.get("/", (req, res) => {
   ////write logic
+  console.log(process.env.DB_HOST);
   connection.execute("select * from user_info", function (err, result) {
     if (err) {
       return res.json({ message: err.message });
