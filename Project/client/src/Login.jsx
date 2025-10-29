@@ -1,12 +1,13 @@
 // Importing useState hook from React and the CSS file for styling
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
+
 // This is the main Login component
 export default function Login() {
-
   // State to store the email input from the user
   const [enteredEmail, setEnteredEmail] = useState("");
 
@@ -15,8 +16,11 @@ export default function Login() {
 
   // State to track if the form has been submitted
   const [submitted, setSubmitted] = useState(false);
+  const [token, setToken] = useState(null);
 
   const navigate = useNavigate(); // for redirecting
+
+  // const recaptchaRef = useRef(null);
 
   // Function to handle input changes for both email and password
   function handleInputChange(identifier, value) {
@@ -28,8 +32,29 @@ export default function Login() {
   }
 
   // Function to handle form submission when the user clicks "Sign In"
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
     setSubmitted(true); // Mark that the user tried to submit the form
+
+
+      e.preventDefault();
+
+    if (!token) {
+      alert("Please verify that you are not a robot!");
+      return;
+    }
+
+    // const res = await fetch(import.meta.env.VITE_API_KEY + "user/verify-recaptcha", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ token }),
+    // });
+
+    // const data = await res.json();
+    // if (data.success) {
+    //   alert("Verification passed!");
+    // } else {
+    //   alert("Verification failed!");
+    // }
 
     // If email is not empty, show an alert with the email
     // if (enteredEmail != "") alert("Email:" + enteredEmail);
@@ -41,20 +66,20 @@ export default function Login() {
 
     // console.log(import.meta.env.VITE_API_KEY + "user/login");
     const response = await fetch(import.meta.env.VITE_API_KEY + "user/login", {
-    // const response = await fetch("http://localhost:8080/user/login", {
-      method: "POST", //GET , PUT     
+      // const response = await fetch("http://localhost:8080/user/login", {
+      method: "POST", //GET , PUT
       body: formBody,
       headers: {
         "content-type": "application/json",
       },
-      credentials:'include' //send cookies
+      credentials: "include", //send cookies
     });
 
     if (response.ok) {
       const result = await response.json();
       console.log(result);
-      Cookies.set("userid",result.result.u_id)
-       navigate("/dashboard");
+      Cookies.set("userid", result.result.u_id);
+      navigate("/dashboard");
     }
   };
 
@@ -70,7 +95,9 @@ export default function Login() {
       <div className="controls">
         {/* Email input field */}
         <p>
-          <label className={`label ${emailNotValid ? "invalid" : " "}`}>Email</label>
+          <label className={`label ${emailNotValid ? "invalid" : " "}`}>
+            Email
+          </label>
           <input
             type="email"
             // Add 'invalid' class if the email is invalid after form submission
@@ -79,8 +106,6 @@ export default function Login() {
             onChange={(event) => handleInputChange("email", event.target.value)}
           />
         </p>
-
-
 
         {/* Password input field */}
         <p>
@@ -97,6 +122,8 @@ export default function Login() {
         </p>
       </div>
 
+<ReCAPTCHA sitekey={import.meta.env.VITE_SITE_KEY} onChange={(value) => setToken(value)}/>
+
       {/* Buttons section */}
       <div className="actions">
         {/* Placeholder button for creating a new account */}
@@ -106,9 +133,10 @@ export default function Login() {
 
         {/* Button to trigger login function */}
         <button className="button" onClick={handleLogin}>
-          Sign In 
+          Sign In
         </button>
       </div>
+      {/* <ReCAPTCHA sitekey={import.meta.env.VITE_SITE_KEY} ref={recaptchaRef} />; */}
     </div>
   );
 }

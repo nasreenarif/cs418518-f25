@@ -18,6 +18,19 @@ const myLogger = function (req, res, next) {
   next();
 };
 app.use(myLogger);
+
+// // Apply Helmet middleware before defining routes
+// app.use(helmet());
+
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       frameAncestors: ["'self'"], // prevent framing from other sites
+//     },
+//   })
+// );
+
 app.use(
   cors({
     origin: process.env.FE_ORIGIN,
@@ -89,7 +102,7 @@ app.all("/test", (req, res) => {
 //     })
 // })
 
-const a = 30;
-console.log(a);
+// const a = 30;
+// console.log(a);
 
 export default app;
