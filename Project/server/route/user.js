@@ -5,7 +5,7 @@ import { hashPassword } from "../utils/helper.js";
 // Import compare password function
 import { comparePassword } from "../utils/helper.js";
 // Import send email function
-import 'dotenv/config';
+import "dotenv/config";
 import { sendEmail } from "../utils/sendmail.js";
 
 const user = Router();
@@ -99,7 +99,7 @@ user.post("/", (req, res) => {
           message: "Response of post api",
           result: result,
         });
-      }
+      },
     );
   } catch (err) {
     res.status(500).json({
@@ -123,7 +123,7 @@ user.put("/:id", (req, res) => {
         message: "Response of put api",
         result: result,
       });
-    }
+    },
   );
 });
 
@@ -141,7 +141,7 @@ user.delete("/:id", (req, res) => {
         message: "Response of put api",
         result: result,
       });
-    }
+    },
   );
 });
 
@@ -165,28 +165,26 @@ user.delete("/:id", (req, res) => {
 //   );
 // });
 
-
 //Login API Compare raw password with hashed password
 user.post("/login", (req, res) => {
   connection.execute(
     "select * from user_info where u_email=? ",
     [req.body.Email],
     function (error, result) {
-     if (error) {
+      if (error) {
         return res.status(500).json({ message: error.message });
       }
 
       if (result.length === 0) {
         return res.status(401).json({ message: "Invalid email or password" });
-      }    
-    const user = result[0];
+      }
+      const user = result[0];
 
       // Use your comparePassword helper
       const isMatch = comparePassword(req.body.Password, user.u_password);
 
       if (isMatch) {
-
-         // Send login email
+        // Send login email
         const subject = "Login Notification";
         const htmlBody = `
           <p>Hi ${user.u_first_name},</p>
@@ -198,7 +196,7 @@ user.post("/login", (req, res) => {
 
         sendEmail(user.u_email, subject, htmlBody);
         // Save username in session
-        req.session.user= {email: user.u_email };
+        req.session.user = { email: user.u_email };
 
         res.status(200).json({
           status: "200",
@@ -209,10 +207,8 @@ user.post("/login", (req, res) => {
       } else {
         res.status(401).json({ message: "Invalid email or password" });
       }
-    }
+    },
   );
 });
-
-
 
 export default user;

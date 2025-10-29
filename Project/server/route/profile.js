@@ -7,7 +7,7 @@ profile.get("/", (req, res) => {
     return res.json({
       status: 200,
       user: req.session.user,
-      message:"Logged In"
+      message: "Logged In",
     });
   } else {
     return res.status(401).json({
@@ -16,6 +16,5 @@ profile.get("/", (req, res) => {
     });
   }
 });
-
 
 export default profile;
