@@ -5,6 +5,7 @@ import express from "express";
 import session from "express-session";
 import profile from "./route/profile.js";
 import user from "./route/user.js";
+import helmet from "helmet";
 
 const app = express();
 const port = 8080;
@@ -20,16 +21,16 @@ const myLogger = function (req, res, next) {
 app.use(myLogger);
 
 // // Apply Helmet middleware before defining routes
-// app.use(helmet());
+app.use(helmet());
 
-// app.use(
-//   helmet.contentSecurityPolicy({
-//     directives: {
-//       defaultSrc: ["'self'"],
-//       frameAncestors: ["'self'"], // prevent framing from other sites
-//     },
-//   })
-// );
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      frameAncestors: ["'self'"], // prevent framing from other sites
+    },
+  }),
+);
 
 app.use(
   cors({
@@ -48,8 +49,8 @@ app.use(
     saveUninitialized: true,
     resave: false,
     cookie: {
-      secure: true, // set to true in production with HTTPS
-      sameSite: "none", //to allow cookie from cross origin
+      secure: false, // set to true in production with HTTPS
+      // sameSite: "none", //to allow cookie from cross origin
       httpOnly: true,
       maxAge: 1000 * 60 * 60, // 1 hour
     },

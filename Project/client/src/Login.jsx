@@ -5,7 +5,6 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
-
 // This is the main Login component
 export default function Login() {
   // State to store the email input from the user
@@ -35,26 +34,28 @@ export default function Login() {
   const handleLogin = async (e) => {
     setSubmitted(true); // Mark that the user tried to submit the form
 
-
-      e.preventDefault();
+    e.preventDefault();
 
     if (!token) {
       alert("Please verify that you are not a robot!");
       return;
     }
 
-    // const res = await fetch(import.meta.env.VITE_API_KEY + "user/verify-recaptcha", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ token }),
-    // });
+    const res = await fetch(
+      import.meta.env.VITE_API_KEY + "user/verify-recaptcha",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+      },
+    );
 
-    // const data = await res.json();
-    // if (data.success) {
-    //   alert("Verification passed!");
-    // } else {
-    //   alert("Verification failed!");
-    // }
+    const data = await res.json();
+    if (data.success) {
+      alert("Verification passed!");
+    } else {
+      alert("Verification failed!");
+    }
 
     // If email is not empty, show an alert with the email
     // if (enteredEmail != "") alert("Email:" + enteredEmail);
@@ -122,7 +123,10 @@ export default function Login() {
         </p>
       </div>
 
-<ReCAPTCHA sitekey={import.meta.env.VITE_SITE_KEY} onChange={(value) => setToken(value)}/>
+      <ReCAPTCHA
+        sitekey={import.meta.env.VITE_SITE_KEY}
+        onChange={(value) => setToken(value)}
+      />
 
       {/* Buttons section */}
       <div className="actions">
