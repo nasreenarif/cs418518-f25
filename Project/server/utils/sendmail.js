@@ -1,8 +1,9 @@
 // Load environment variables from .env file
+import sgMail from "@sendgrid/mail";
 import "dotenv/config";
 
 // Import nodemailer's createTransport function
-import { createTransport } from "nodemailer";
+// import { createTransport } from "nodemailer";
 
 /**
  * Sends an email using SMTP (Gmail in this case)
@@ -11,33 +12,52 @@ import { createTransport } from "nodemailer";
  * @param {string} mailSubject - Subject of the email
  * @param {string} body - HTML content of the email
  */
-export function sendEmail(email, mailSubject, body) {
-  // Create a transporter object using SMTP transport
-  const transport = createTransport({
-    host: "smtp.gmail.com", // Gmail SMTP server
-    port: 587, // TLS port for Gmail
-    secure: false, // Use TLS, not SSL
-    requireTLS: true, // Force TLS
-    auth: {
-      user: process.env.SMTP_EMAIl, // Your Gmail address (from .env)
-      pass: process.env.SMTP_PASSWORD, // Your Gmail app password (from .env)
-    },
-  });
+// export function sendEmail(email, mailSubject, body) {
+//   // Create a transporter object using SMTP transport
+//   const transport = createTransport({
+//     host: "smtp.gmail.com", // Gmail SMTP server
+//     port: 587, // TLS port for Gmail
+//     secure: false, // Use TLS, not SSL
+//     requireTLS: true, // Force TLS
+//     auth: {
+//       user: process.env.SMTP_EMAIl, // Your Gmail address (from .env)
+//       pass: process.env.SMTP_PASSWORD, // Your Gmail app password (from .env)
+//     },
+//   });
 
-  // Define email options
-  const mailOptions = {
-    from: process.env.SMTP_EMAIl, // Sender address (must match authenticated user)
-    to: email, // Recipient email
-    subject: mailSubject, // Email subject line
-    html: body, // Email body as HTML
-  };
+//   // Define email options
+//   const mailOptions = {
+//     from: process.env.SMTP_EMAIl, // Sender address (must match authenticated user)
+//     to: email, // Recipient email
+//     subject: mailSubject, // Email subject line
+//     html: body, // Email body as HTML
+//   };
 
-  // Send the email
-  transport.sendMail(mailOptions, function (err, result) {
-    if (err) {
-      console.log("Error in sending email"); // Log failure
-    } else {
-      console.log("Email has been sent"); // Log success
-    }
-  });
+//   // Send the email
+//   transport.sendMail(mailOptions, function (err, result) {
+//     if (err) {
+//       console.log("Error in sending email"); // Log failure
+//     } else {
+//       console.log("Email has been sent"); // Log success
+//     }
+//   });
+export async function sendEmail(email, mailSubject, body) {
+  try {
+    // Set your SendGrid API key from environment variables
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    console.log("API:", process.env.SENDGRID_API_KEY ? "Loaded" : "Missing");
+
+    // Define the email details
+    const msg = {
+      to: email, // Recipient
+      from: process.env.SMTP_EMAIL, // Must be a verified sender in SendGrid
+      subject: mailSubject,
+      html: body,
+    };
+    // Send the email
+    await sgMail.send(msg);
+    console.log("Email has been sent successfully");
+  } catch (error) {
+    console.error("Error sending email:", error);
+  }
 }
