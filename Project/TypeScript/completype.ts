@@ -5,7 +5,7 @@ let scores: number[] = [85, 92, 78];
 let fruits: string[] = ["Apple", "Banana", "Mango"];
 
 // Pushing correct and incorrect values
-scores.push(99);      // ✔ allowed
+scores.push(99);      // allowed
 // scores.push("test"); // Type error
 
 
